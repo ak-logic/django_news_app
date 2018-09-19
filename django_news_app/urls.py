@@ -29,4 +29,3 @@ urlpatterns = [
     url(r'', include('news.urls')),
     url(r'^api/', include(v1_api.urls)),
 ]
-

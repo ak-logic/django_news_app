@@ -8,9 +8,10 @@ from django.dispatch import receiver
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    firstname = models.CharField(max_length=50)
-    lastname = models.CharField(max_length=50)
     bio = models.TextField(max_length=500, blank=True)
+
+    def __str__(self):
+        return str(self.user.first_name) + ' ' + str(self.user.last_name)
 
 
 class News(models.Model):
@@ -22,6 +23,9 @@ class News(models.Model):
 
     def __unicode__(self):
         return self.title
+
+    def __str__(self):
+        return str(self.title) + ' by ' + str(self.writer.user.username)
 
     def save(self, *args, **kwargs):
         # For automatic slug generation.
