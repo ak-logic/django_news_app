@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 # from django.utils import timezone
 from tastypie.utils.timezone import now
 from django.utils.text import slugify
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from django.db.utils import IntegrityError
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -28,8 +28,16 @@ class News(models.Model):
         return str(self.title) + ' by ' + str(self.writer.user.username)
 
     def save(self, *args, **kwargs):
-        # For automatic slug generation.
+        # To autogenerate a slug and ensure valid/unique slugs
         if not self.slug:
-            self.slug = slugify(self.title)[:30]
-
+            new_slug = slugify(self.title[:30])
+            valid_slug = new_slug
+            counter = 1
+            while News.objects.filter(slug=valid_slug).exists():
+                valid_slug = new_slug + '-' + str(counter)
+                counter += 1
+            self.slug = valid_slug
         return super(News, self).save(*args, **kwargs)
+
+    class Meta:
+        ordering = ["-pub_date"]

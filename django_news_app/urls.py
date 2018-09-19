@@ -19,6 +19,7 @@ from django.contrib import admin
 from tastypie.api import Api
 from news.api import NewsResource, UserResource
 
+
 # news_resource = NewsResource()
 v1_api = Api(api_name='v1')
 v1_api.register(UserResource())
@@ -26,6 +27,7 @@ v1_api.register(NewsResource())
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'', include('news.urls')),
+    url(r'^news/', include('news.urls')),
+    url(r'', include('website.urls')),
     url(r'^api/', include(v1_api.urls)),
 ]

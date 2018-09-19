@@ -12,11 +12,14 @@
     <title>Create a News | My Django News</title>
 </head>
 <body>
-  <form method="post" action="/save/">
+  <form method="post" action="/news/save/">
     {% csrf_token %}
     <input type="text" name="title" id="id_title" placeholder="Title" required>
     <br>
     <textarea id="id_news_content" name="news_content" required></textarea>
+    <label for="writer_name">Written by </label>
+    <input type="text" name="writer_name" value="{{first_name}} {{last_name}}" readonly>
+    <br>
     <button type="submit">Create</button>
   </form>
 </body>

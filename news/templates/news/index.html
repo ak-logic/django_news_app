@@ -13,16 +13,24 @@
 
 </head>
 <body>
-  <h1>Welcome to the news World!</h1>
-  <a class="button" href="/create/"><button>Create News</button></a>
-  {% for article in news %}
-    <h3>{{ article.title }}</h3>
-    <br>
-    <p>{{ article.content }}</p>
-    {% if request.user == article.writer.user %}
-      <a href="/delete/{{article.slug}}/"><button>Delete my article?</button></a>
-    {% endif %}
-    <br>
-  {% endfor %}
+  {% if err_msg %}
+    <h1 style="color: red;">Sorry, an error occured: {{ err_msg }}</h1>
+  {% else %}
+    <h1>Welcome to the news World!</h1>
+    <a class="button" href="/news/create/"><button>Submit an Article</button></a>
+    <a class="button" href="/news/my/"><button>My Articles</button></a>
+    {% for article in news %}
+      <h3>{{ article.title }}</h3>
+      <br>
+      <p>{{ article.content }}</p>
+      {% if request.user == article.writer.user %}
+        <a target="_parent" href="/news/delete/{{article.slug}}/"><button>Delete this article?</button></a>
+        <a href="/news/edit/{{article.slug}}/"><button>Edit article</button></a>
+      {% endif %}
+      <br>
+      <p>created by <span><i> {{article.writer.user.first_name}} {{article.writer.user.last_name}}</i></span></p>
+      <hr><br>
+    {% endfor %}
+  {% endif %}
 </body>
 </html>

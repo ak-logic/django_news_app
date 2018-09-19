@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles%}
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="author" content="Akintade Britto">
+    <meta name="description" content="A django REST api-driven web app">
+
+    <title>Edit News Article | My Django News</title>
+</head>
+<body>
+  <form method="post" action="/news/complete_edit/">
+    {% csrf_token %}
+    <input type="text" name="title" id="id_title" value="{{ article.title }}" required>
+    <br>
+    <textarea id="id_news_content" name="news_content" required>{{ article.content }}</textarea>
+    <label for="writer_name">Written by </label>
+    <input type="text" name="writer_name" value="{{ article.writer.user.first_name }} {{ article.writer.user.last_name }}" readonly>
+    <input type="hidden" name="news_id" value="{{ news_id }}" readonly>
+    <br>
+    <button type="submit">Save</button>
+  </form>
+</body>
+</html>
